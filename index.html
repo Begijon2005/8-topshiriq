@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiChain | Blockchain Logistics Tracking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="overlay" id="loading">
+        <div class="loader"></div>
+        <h3>Blockchain Tranzaksiyasi...</h3>
+        <p id="miningStatus" style="font-family: monospace; color: var(--emerald); margin-top: 10px;">Hash: ...</p>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <i data-lucide="package"></i>
+            Logi<span>Chain</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="active" onclick="showTab('dashboard')">Dashboard</a>
+            <a href="#" onclick="showTab('tracking')">Kuzatish</a>
+            <a href="#" onclick="showTab('explorer')">Explorer</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- DASHBOARD TAB -->
+        <div id="dashboard" class="tab active">
+            <div class="grid">
+                <div class="card">
+                    <h2><i data-lucide="plus-square"></i> Yangi Mahsulot</h2>
+                    <div class="group">
+                        <label>Mahsulot Nomi</label>
+                        <input type="text" id="itemName" placeholder="Masalan: iPhone 15 Pro">
+                    </div>
+                    <div class="group">
+                        <label>Ishlab Chiqaruvchi</label>
+                        <input type="text" id="manufacturer" placeholder="Apple Inc.">
+                    </div>
+                    <div class="group">
+                        <label>Joylashuv (Hozirgi)</label>
+                        <input type="text" id="initLocation" placeholder="California, USA">
+                    </div>
+                    <button class="btn" onclick="registerProduct()">
+                        <i data-lucide="database"></i> Tizimga Kiritish
+                    </button>
+                </div>
+
+                <div>
+                    <h2 style="margin-bottom: 1.5rem;"><i data-lucide="list"></i> Mavjud Mahsulotlar</h2>
+                    <div id="assetList">
+                        <!-- Assets show here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRACKING TAB -->
+        <div id="tracking" class="tab">
+            <div class="grid">
+                <div class="card">
+                    <h2><i data-lucide="map-pin"></i> Holatni Yangilash</h2>
+                    <div class="group">
+                        <label>Mahsulot ID (Hash/AssetID)</label>
+                        <input type="text" id="trackAssetId" placeholder="Mahsulot ID-sini kiriting">
+                    </div>
+                    <div class="group">
+                        <label>Yangi Holat</label>
+                        <select id="newStatus">
+                            <option value="IN_TRANSIT">Yo'lda (In Transit)</option>
+                            <option value="OWNERSHIP_TRANSFER">Egalikni o'tkazish</option>
+                            <option value="DELIVERED">Yetkazib berildi</option>
+                            <option value="AUDIT">Tekshiruv/Audit</option>
+                        </select>
+                    </div>
+                    <div class="group">
+                        <label>Yangi Manzil</label>
+                        <input type="text" id="newLocation" placeholder="Masalan: Tashkent, Uzbekistan">
+                    </div>
+                    <div class="group">
+                        <label>Mas'ul Shaxs / Egasi</label>
+                        <input type="text" id="newOwner" placeholder="Masalan: Express Logistics">
+                    </div>
+                    <div class="group">
+                        <label>Izoh</label>
+                        <input type="text" id="remarks" placeholder="Ixtiyoriy izoh">
+                    </div>
+                    <button class="btn" onclick="updateStatus()">
+                        <i data-lucide="refresh-cw"></i> Blockchain-ni yangilash
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h2><i data-lucide="route"></i> Ta'minot Zanjiri Tarixi</h2>
+                    <div id="timeline" class="timeline">
+                        <p style="color: var(--text-gray)">Mahsulot ID-sini kiriting va tarixi bilan tanishing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="explorer" class="tab">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="margin-bottom: 0;"><i data-lucide="database"></i> Global Blockchain Explorer</h2>
+                <button class="btn btn-outline" onclick="auditChain()">
+                    <i data-lucide="list-checks"></i> Tizimni Audit Qilish
+                </button>
+            </div>
+            <div id="blockExplorer">
+                <!-- Blocks show here -->
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script>
+        function showTab(id) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Refresh icons if needed
+            if (window.lucide) lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
